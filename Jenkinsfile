@@ -1,26 +1,28 @@
 pipeline{
     agent any
+    tools{
+        maven 'Maven'
+    }
     stages{
-        stage("git-checkout"){
+        stage("Build"){
             steps{
-                // Checking out the code from git
-                git url : 'https://github.com/KURO-1125/JENKINS-PRACTICE.git', branch : 'main'
-                
+                sh 'mvn clean package'
             }
         }
-        stage("BUILD"){
+        stage("Test"){
             steps{
-                echo "BUILDING KURO"
+                sh 'mvn test'
             }
         }
-        stage("TEST"){
+        stage("Run JAR"){
             steps{
-                echo "TESTING KURO"
-            }
-        }
-        stage("DEPLOY"){
-            steps{
-                echo "DEPLOYING KURO"
+                scripts{
+                    // Run the JAR file and capture the output
+                    def output = sh(script:'java -jar target/simple-java-project-1.0-SNAPSHOT.jar', returnStdout:true).trim()
+
+                    // Print the output to jenkins console
+                    echo "Output from JAR : ${output}"
+                }
             }
         }
     }
