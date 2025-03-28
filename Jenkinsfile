@@ -3,7 +3,9 @@ pipeline{
     stages{
         stage("git-checkout"){
             steps{
-                echo "Checking out the code from git"
+                // Checking out the code from git
+                git url : 'https://github.com/KURO-1125/JENKINS-PRACTICE.git', branch : 'main'
+                
             }
         }
         stage("BUILD"){
